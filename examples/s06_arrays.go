@@ -103,7 +103,8 @@ func main() {
 }
 
 func modifyArray(a [3]int) {
-	a[0] = 999 // modifies the copy
+	a[0] = 999 // modifies the copy (not caller's original)
+	fmt.Println("  inside modifyArray, a[0] =", a[0])
 }
 
 func modifyArrayPtr(a *[3]int) {

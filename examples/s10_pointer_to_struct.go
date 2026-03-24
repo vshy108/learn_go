@@ -70,6 +70,7 @@ func main() {
 	}
 	for _, v := range values {
 		v.Age = 99 // modifies the copy, not the original!
+		_ = v      // acknowledge the copy is discarded
 	}
 	fmt.Printf("After range: %+v (unchanged!)\n", values)
 

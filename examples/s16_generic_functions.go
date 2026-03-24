@@ -73,8 +73,8 @@ func main() {
 	fmt.Println("Max(3.14, 2.72):", Max(3.14, 2.72))
 	fmt.Println("Max(\"apple\", \"banana\"):", Max("apple", "banana"))
 
-	// Explicit type argument (usually inferred):
-	fmt.Println("Max[int](10, 20):", Max[int](10, 20))
+	// Explicit type argument (usually inferred, so not needed here):
+	fmt.Println("Max(10, 20):", Max(10, 20))
 
 	// ─────────────────────────────────────────────
 	// Using Print
