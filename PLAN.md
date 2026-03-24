@@ -214,6 +214,7 @@ go build examples/<name>.go      # compiles without warnings
 - [x] 126. `s17_benchmarks` — Benchmarks with testing.B
 - [x] 127. `s17_example_tests` — Example tests (testable documentation)
 - [x] 128. `s17_testmain` — TestMain for setup/teardown
+- [x] 129. `s17_tdd` — TDD (Test-Driven Development) — RED→GREEN→REFACTOR cycle
 
 ## Section 18: Standard Library Highlights
 
