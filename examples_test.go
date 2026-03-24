@@ -10,22 +10,20 @@ import (
 	"time"
 )
 
-// skipFiles lists examples that cannot run in automated tests:
-// - files that make outbound HTTP requests (require network, flaky in CI)
-var skipFiles = map[string]string{
-	"s18_net_http.go": "makes outbound HTTP requests to httpbin.org",
-}
+// skipFiles lists examples that cannot run in automated tests.
+// Currently: none! All examples use local mocks or print-only patterns.
+var skipFiles = map[string]string{}
 
 // slowFiles get a longer timeout (they use time.Sleep for demos)
 var slowFiles = map[string]bool{
-	"s13_goroutine_basics.go":   true,
-	"s13_goroutine_patterns.go": true,
-	"s13_waitgroup.go":          true,
-	"s14_channel_basics.go":     true,
+	"s13_goroutine_basics.go":     true,
+	"s13_goroutine_patterns.go":   true,
+	"s13_waitgroup.go":            true,
+	"s14_channel_basics.go":       true,
 	"s14_context_cancellation.go": true,
-	"s14_fan_out_fan_in.go":     true,
-	"s14_select.go":             true,
-	"s18_time.go":               true,
+	"s14_fan_out_fan_in.go":       true,
+	"s14_select.go":               true,
+	"s18_time.go":                 true,
 	"s19_concurrency_patterns.go": true,
 }
 
