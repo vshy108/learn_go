@@ -58,7 +58,7 @@ func main() {
 	// Example test file: math_test.go
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Example test file --")
-	fmt.Println(`
+	fmt.Print(`
 // math_test.go
 package mypackage
 

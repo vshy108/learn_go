@@ -100,7 +100,7 @@ func main() {
 	// Demonstrate (normally you'd use http.ListenAndServe):
 	_ = handler
 
-	fmt.Println(`
+	fmt.Print(`
 // Usage:
 mux := http.NewServeMux()
 mux.HandleFunc("GET /api/public", publicHandler)

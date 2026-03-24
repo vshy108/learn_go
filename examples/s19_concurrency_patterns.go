@@ -107,7 +107,7 @@ func main() {
 	// 5. errgroup pattern (conceptual)
 	// ─────────────────────────────────────────────
 	fmt.Println("\n-- errgroup (concept) --")
-	fmt.Println(`
+	fmt.Print(`
 import "golang.org/x/sync/errgroup"
 
 g, ctx := errgroup.WithContext(context.Background())

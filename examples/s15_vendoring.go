@@ -37,7 +37,7 @@ func main() {
 	// 2. Vendor directory structure
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Structure --")
-	fmt.Println(`
+	fmt.Print(`
   vendor/
   ├── modules.txt          ← tracks vendored modules
   ├── github.com/

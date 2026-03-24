@@ -19,7 +19,7 @@ func main() {
 	// 1. Example tests (testable documentation)
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Example tests --")
-	fmt.Println(`
+	fmt.Print(`
 // In math_test.go:
 func ExampleAdd() {
     fmt.Println(add(2, 3))
@@ -49,7 +49,7 @@ func ExampleAdd_negative() {
 	// 3. Fuzz testing (Go 1.18+)
 	// ─────────────────────────────────────────────
 	fmt.Println("\n-- Fuzz testing --")
-	fmt.Println(`
+	fmt.Print(`
 // In reverse_test.go:
 func FuzzReverse(f *testing.F) {
     // Seed corpus (initial test cases):

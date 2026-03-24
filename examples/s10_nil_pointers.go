@@ -53,11 +53,10 @@ func main() {
 	// 3. Safe nil check pattern
 	// ─────────────────────────────────────────────
 	fmt.Println("\n-- Safe nil check --")
-	if p != nil {
-		fmt.Println("Value:", *p)
-	} else {
-		fmt.Println("Pointer is nil, skipping dereference")
-	}
+	// Use a helper to demonstrate both branches:
+	checkPointer(nil) // Pointer is nil, skipping dereference
+	val := 42
+	checkPointer(&val) // Value: 42
 
 	// ─────────────────────────────────────────────
 	// 4. Methods on nil receiver
@@ -108,4 +107,12 @@ func findUser(name string) *Config {
 		return &Config{Name: "admin"}
 	}
 	return nil
+}
+
+func checkPointer(p *int) {
+	if p != nil {
+		fmt.Println("Value:", *p)
+	} else {
+		fmt.Println("Pointer is nil, skipping dereference")
+	}
 }

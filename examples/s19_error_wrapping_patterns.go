@@ -109,7 +109,7 @@ func main() {
 	// ─────────────────────────────────────────────
 	// 3. fmt.Errorf with %w (simple wrapping)
 	// ─────────────────────────────────────────────
-	fmt.Println("\n-- fmt.Errorf %w --")
+	fmt.Println("\n-- Errorf wrapping with w verb --")
 	err = fmt.Errorf("outer: %w", fmt.Errorf("inner: %w", ErrNotFound))
 	fmt.Println("Error:", err)
 	fmt.Println("Is ErrNotFound:", errors.Is(err, ErrNotFound))

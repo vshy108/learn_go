@@ -26,7 +26,7 @@ func main() {
 	// ─────────────────────────────────────────────
 	// 1. Custom test helper
 	// ─────────────────────────────────────────────
-	fmt.Println(`
+	fmt.Print(`
 // helpers_test.go
 func assertEqual(t *testing.T, got, want int) {
     t.Helper()  // marks this as helper
@@ -46,7 +46,7 @@ func TestAdd(t *testing.T) {
 	// 2. testify assert
 	// ─────────────────────────────────────────────
 	fmt.Println("-- testify assert --")
-	fmt.Println(`
+	fmt.Print(`
 import "github.com/stretchr/testify/assert"
 
 func TestWithAssert(t *testing.T) {
@@ -67,7 +67,7 @@ func TestWithAssert(t *testing.T) {
 	// 3. testify require (stops on failure)
 	// ─────────────────────────────────────────────
 	fmt.Println("-- testify require --")
-	fmt.Println(`
+	fmt.Print(`
 import "github.com/stretchr/testify/require"
 
 func TestWithRequire(t *testing.T) {
@@ -82,7 +82,7 @@ func TestWithRequire(t *testing.T) {
 	// 4. Setup and teardown
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Setup/Teardown --")
-	fmt.Println(`
+	fmt.Print(`
 func TestMain(m *testing.M) {
     // Global setup
     setup()
@@ -110,7 +110,7 @@ func TestSomething(t *testing.T) {
 	// 5. t.Parallel()
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Parallel tests --")
-	fmt.Println(`
+	fmt.Print(`
 func TestA(t *testing.T) {
     t.Parallel()  // run in parallel with other parallel tests
     // ...

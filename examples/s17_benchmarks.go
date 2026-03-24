@@ -26,7 +26,7 @@ func main() {
 	// ─────────────────────────────────────────────
 	// Example benchmark
 	// ─────────────────────────────────────────────
-	fmt.Println(`
+	fmt.Print(`
 // string_test.go
 package mypackage
 
@@ -59,7 +59,7 @@ func BenchmarkStringBuilder(b *testing.B) {
 	// Output format
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Typical output --")
-	fmt.Println(`
+	fmt.Print(`
 BenchmarkStringConcat-8      100000    12500 ns/op    8192 B/op    99 allocs/op
 BenchmarkStringBuilder-8    1000000     1050 ns/op     512 B/op     4 allocs/op
 
@@ -86,7 +86,7 @@ Columns:
 	// b.ResetTimer and b.StopTimer
 	// ─────────────────────────────────────────────
 	fmt.Println("\n-- Timer control --")
-	fmt.Println(`
+	fmt.Print(`
 func BenchmarkWithSetup(b *testing.B) {
     // Expensive setup:
     data := generateLargeDataset()

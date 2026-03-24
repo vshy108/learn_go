@@ -43,7 +43,7 @@ func main() {
 	// ─────────────────────────────────────────────
 	// Example table-driven test
 	// ─────────────────────────────────────────────
-	fmt.Println(`
+	fmt.Print(`
 // In abs_test.go:
 func TestAbs(t *testing.T) {
     tests := []struct {

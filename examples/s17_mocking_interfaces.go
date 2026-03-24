@@ -118,7 +118,7 @@ func main() {
 	// Test example
 	// ─────────────────────────────────────────────
 	fmt.Println("\n-- Example test --")
-	fmt.Println(`
+	fmt.Print(`
 func TestGetUserName(t *testing.T) {
     mock := &MockStore{
         users: map[int]User{1: {ID: 1, Name: "Alice"}},

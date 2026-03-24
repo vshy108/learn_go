@@ -27,7 +27,7 @@ func main() {
 	// 1. go.work file
 	// ─────────────────────────────────────────────
 	fmt.Println("-- go.work --")
-	fmt.Println(`
+	fmt.Print(`
 go 1.22
 
 use (
@@ -41,7 +41,7 @@ use (
 	// 2. Example project structure
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Structure --")
-	fmt.Println(`
+	fmt.Print(`
   mymonorepo/
   ├── go.work          ← workspace file
   ├── app/

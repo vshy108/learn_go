@@ -34,7 +34,7 @@ func main() {
 	// 1. go.mod file structure
 	// ─────────────────────────────────────────────
 	fmt.Println("-- go.mod --")
-	fmt.Println(`
+	fmt.Print(`
 module github.com/user/myproject
 
 go 1.22

@@ -82,7 +82,7 @@ func main() {
 	// ─────────────────────────────────────────────
 	// 5. %v vs %w
 	// ─────────────────────────────────────────────
-	fmt.Println("\n-- %v vs %w --")
+	fmt.Println("\n-- Errorf verbs: v vs w --")
 	base := ErrNotFound
 	withW := fmt.Errorf("wrapped: %w", base)                               // preserves chain
 	withV := fmt.Errorf("wrapped: %v", base)                               // BREAKS chain!

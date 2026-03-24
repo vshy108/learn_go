@@ -3,7 +3,7 @@
 // Section 20, Topic 147: Build Tags & Conditional Compilation
 //
 // Build tags control which files are included in a build.
-// Go 1.17+ uses //go:build syntax (replaces // +build).
+// Go 1.17+ uses //go:build syntax (replaces the old "plus build" directive).
 //
 // Common uses:
 //   - Platform-specific code (linux, windows, darwin)
@@ -12,7 +12,7 @@
 //   - Excluding files from normal builds (//go:build ignore)
 //
 // GOTCHA: //go:build must be FIRST line in the file (before package).
-// GOTCHA: Old syntax (// +build) is still supported but deprecated.
+// GOTCHA: Old syntax ("plus build") is still supported but deprecated.
 //
 // Run: go run examples/s20_build_tags.go
 
@@ -40,7 +40,7 @@ func main() {
 	// 2. Build tag syntax
 	// ─────────────────────────────────────────────
 	fmt.Println("\n-- Build tag syntax (//go:build) --")
-	fmt.Println(`
+	fmt.Print(`
 // Single constraint:
 //go:build linux
 
@@ -64,7 +64,7 @@ func main() {
 	// 3. File naming convention (alternative to tags)
 	// ─────────────────────────────────────────────
 	fmt.Println("-- File naming convention --")
-	fmt.Println(`
+	fmt.Print(`
 Go auto-includes files based on name suffixes:
   file_linux.go      → only on Linux
   file_windows.go    → only on Windows
@@ -79,7 +79,7 @@ This is equivalent to putting a build tag at the top.
 	// 4. Custom build tags
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Custom build tags --")
-	fmt.Println(`
+	fmt.Print(`
 // In file: feature_flag.go
 //go:build feature_x
 
@@ -94,7 +94,7 @@ This is equivalent to putting a build tag at the top.
 	// 5. Practical example: debug logging
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Debug build pattern --")
-	fmt.Println(`
+	fmt.Print(`
 // debug.go:
 //go:build debug
 
@@ -116,7 +116,7 @@ func debugLog(msg string) {} // no-op
 	// 6. Why this file uses //go:build ignore
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Why //go:build ignore --")
-	fmt.Println(`
+	fmt.Print(`
 All example files in this project use:
   //go:build ignore
 

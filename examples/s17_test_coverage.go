@@ -41,7 +41,7 @@ func main() {
 	// 2. Coverage output
 	// ─────────────────────────────────────────────
 	fmt.Println("\n-- go tool cover -func output --")
-	fmt.Println(`
+	fmt.Print(`
 mypackage/math.go:5:    Add         100.0%
 mypackage/math.go:9:    Divide      85.7%
 mypackage/math.go:20:   Factorial   60.0%
@@ -60,7 +60,7 @@ total:                  (statements) 78.5%
 	// 4. In CI/CD
 	// ─────────────────────────────────────────────
 	fmt.Println("\n-- CI/CD --")
-	fmt.Println(`
+	fmt.Print(`
 # Fail if coverage < 80%:
 go test -coverprofile=cover.out ./...
 COVERAGE=$(go tool cover -func=cover.out | grep total | awk '{print $3}' | tr -d '%')
