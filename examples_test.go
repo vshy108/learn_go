@@ -11,11 +11,9 @@ import (
 )
 
 // skipFiles lists examples that cannot run in automated tests:
-// - network listeners / HTTP servers that block
-// - files that deliberately demonstrate log.Fatal / os.Exit
+// - files that make outbound HTTP requests (require network, flaky in CI)
 var skipFiles = map[string]string{
-	"s18_net_http.go":        "starts HTTP server (blocks)",
-	"s19_middleware_pattern.go": "references http.ListenAndServe",
+	"s18_net_http.go": "makes outbound HTTP requests to httpbin.org",
 }
 
 // slowFiles get a longer timeout (they use time.Sleep for demos)
