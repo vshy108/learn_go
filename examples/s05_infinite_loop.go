@@ -2,8 +2,8 @@
 
 // Section 5, Topic 41: Infinite Loops and Breaking Out
 //
-// Go's infinite loop is: for { }
-// This is the idiomatic way to write servers, event loops, retry loops, etc.
+// Go's for {} is the infinite loop. No while keyword exists.
+// Use break, return, or os.Exit to terminate.
 //
 // Run: go run examples/s05_infinite_loop.go
 
@@ -15,65 +15,61 @@ func main() {
 	fmt.Println("=== Infinite Loops ===")
 	fmt.Println()
 
-	// ─────────────────────────────────────────────
 	// 1. Basic infinite loop with break
-	// ─────────────────────────────────────────────
-	fmt.Println("-- Counting to 5 --")
-	i := 0
+	fmt.Println("-- Break on condition --")
+	count := 0
 	for {
-		if i >= 5 {
+		count++
+		if count > 5 {
 			break
 		}
+		fmt.Printf("  count=%d\n", count)
+	}
+	fmt.Println("  Broke out at count =", count)
 
+	// 2. Infinite with continue
+	fmt.Println("\n-- Skip evens --")
+	i := 0
+	for {
+		i++
+		if i > 10 {
+			break
+		}
+		if i%2 == 0 {
+			continue
+		}
+		fmt.Printf("  odd: %d\n", i)
+	}
 
+	// 3. Labeled break
+	fmt.Println("\n-- Labeled break --")
+outer:
+	for x := 0; x < 3; x++ {
+		for y := 0; y < 3; y++ {
+			if x == 1 && y == 1 {
+				fmt.Println("  Breaking out of both loops")
+				break outer
+			}
+			fmt.Printf("  x=%d, y=%d\n", x, y)
+		}
+	}
 
+	// 4. Simulate while loop
+	fmt.Println("\n-- Simulated while --")
+	n := 1
+	for n < 100 {
+		n *= 2
+	}
+	fmt.Println("  First power of 2 >= 100:", n)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}	// Go's for cannot return a value.	// Rust's loop can return a value: let x = loop { break 42; };	// Both support labeled breaks for nested loops.	// Rust: loop { ... break }	// Go:   for { ... break }	// ─────────────────────────────────────────────	// Comparison: Go vs Rust	// ─────────────────────────────────────────────	// }	//     go handleConnection(conn)	//     if err != nil { continue }	//     conn, err := listener.Accept()	// for {	// ─────────────────────────────────────────────	// 4. Typical server pattern (conceptual)	// ─────────────────────────────────────────────	}		fmt.Printf("Attempt %d failed, retrying...\n", attempts)		}			break			fmt.Printf("Succeeded after %d attempts\n", attempts)		if success {		success := attempts >= 3 // simulate: succeeds on 3rd try		attempts++	for {	attempts := 0	fmt.Println("\n-- Retry pattern --")	// ─────────────────────────────────────────────	// 3. Retry pattern	// ─────────────────────────────────────────────	fmt.Println()	}		}			break		if n > 20 {		n *= 2		fmt.Printf("n=%d ", n)	for {	n := 1	fmt.Println("\n-- Do-while pattern --")	// ─────────────────────────────────────────────	// 2. Do-while pattern (execute at least once)	// ─────────────────────────────────────────────	fmt.Println()	}		i++		fmt.Printf("%d ", i)
+	// 5. Simulate do-while
+	fmt.Println("\n-- Simulated do-while --")
+	val := 0
+	for {
+		val++
+		fmt.Printf("  val=%d\n", val)
+		if val >= 3 {
+			break
+		}
+	}
+}

@@ -1,125 +1,75 @@
 //go:build ignore
 
-// Section 2, Topic 11: Constants — const keyword and untyped constants
+// Section 2, Topic 11: const keyword, untyped constants
 //
-// Constants in Go are declared with `const`. They must be computable at
-// compile time (no function calls, no runtime values).
+// Constants are immutable values known at compile time.
+// Untyped constants have higher precision and adapt to context.
 //
-// Go has a unique feature: "untyped constants" — constants without an explicit
-// type that have much higher precision and flexibility than typed values.
+// GOTCHA: Constants cannot be declared with :=.
+// GOTCHA: Untyped constants can be used with any compatible type.
+// GOTCHA: Constants must be compile-time evaluable (no function calls).
 //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}	// Go constants have no address — you cannot take &Pi.	// Rust also has `static` for constants with an address in memory.	//	// Rust: const PI: f64 = 3.14;    (always typed, must annotate)	// Go:   const Pi float64 = 3.14  (typed, fixed)	// Go:   const Pi = 3.14   (untyped, flexible)	// ─────────────────────────────────────────────	// 8. Comparison: Go const vs Rust const	// ─────────────────────────────────────────────	fmt.Printf("Pi=%f, App=%s v%d, Debug=%t\n", Pi, AppName, AppVersion, Debug)	fmt.Println("\n-- Package-level constants --")	// ─────────────────────────────────────────────	// 7. Package-level constants	// ─────────────────────────────────────────────	// const c = 20 // ERROR: c already declared	// c++          // ERROR: cannot assign to c	// c = 20       // ERROR: cannot assign to c	const c = 10	// ─────────────────────────────────────────────	// 6. Constants are immutable	// ─────────────────────────────────────────────	fmt.Printf("MaxInt64 = %d\n", maxInt)	const maxInt = math.MaxInt64	// Constant expressions using built-in functions:	// NOT pointers, slices, maps, structs, arrays, channels, functions	// Basic types only: bool, string, int, float, complex, rune	// ─────────────────────────────────────────────	// 5. What CAN be a constant	// ─────────────────────────────────────────────	fmt.Printf("\nlen(\"hello\") = %d (constant)\n", strLen)	const strLen = len("hello") // ✓ compile-time computable	// But len of a string literal IS constant:	// const s = len([]int{1,2,3})  // ERROR: not a constant expression	// const now = time.Now()  // ERROR: time.Now() is not constant	// ─────────────────────────────────────────────	// 4. Constants must be compile-time computable	// ─────────────────────────────────────────────	fmt.Printf("huge as float64: %e\n", float64(huge))	// But you can use it in float expressions:	// var h int = huge  // ERROR: constant 1267650600228229401496703205376 overflows int	// You can't assign `huge` directly to a variable:	fmt.Println("huge >> 98 =", small)	const small = huge >> 98 // 1 << 2 = 4	// But it can still be used in expressions:	const huge = 1 << 100 // This would overflow any integer type	// Untyped constants have at least 256 bits of precision!	fmt.Println("\n-- Untyped constant precision --")	// ─────────────────────────────────────────────	// 3. Untyped constant precision	// ─────────────────────────────────────────────	fmt.Printf("typed int 42: int=%d\n", i)	var i int = y           // ✓ same type	// var f float64 = y    // ERROR: cannot use y (type int) as float64	const y int = 42	// Typed constant (fixed — behaves like a variable of that type)	fmt.Printf("untyped 42: int8=%d, float64=%f\n", i8, f64)	var f64 float64 = x    // ✓ 42 converts to float64	var i8 int8 = x       // ✓ 42 fits in int8	const x = 42	// Untyped constant (flexible — can be used as any compatible type)	fmt.Println("\n-- Typed vs untyped --")	// ─────────────────────────────────────────────	// 2. Typed vs untyped constants	// ─────────────────────────────────────────────	fmt.Printf("maxRetries=%d, pi=%.5f\n", maxRetries, pi)	fmt.Println(greeting)	const pi = 3.14159	const maxRetries = 3	const greeting = "Hello, Go!"	// ─────────────────────────────────────────────	// 1. Basic constant declaration	// ─────────────────────────────────────────────	fmt.Println()	fmt.Println("=== Constants ===")func main() {)	Debug      = false	AppVersion = 1	AppName    = "learn_go"const (// Factored (grouped) constantsconst Pi = 3.14159265358979323846// ─────────────────────────────────────────────// Package-level constants// ─────────────────────────────────────────────)	"math"	"fmt"import (package main// Run: go run examples/s02_constants.go//// GOTCHA: Untyped numeric constants have arbitrary precision (not limited to 64 bits).// GOTCHA: Constants cannot be pointers, slices, maps, or structs (only basic types).// GOTCHA: Constants cannot be declared with `:=`.
+// Run: go run examples/s02_constants.go
+
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+// Package-level constants
+const Pi = 3.14159265358979323846
+const AppName = "LearnGo"
+
+// Grouped constants
+const (
+	MaxRetries = 3
+	Timeout    = 30 // seconds
+)
+
+// Typed vs untyped
+const typedInt int = 42
+const untypedInt = 42 // untyped: adapts to context
+
+func main() {
+	fmt.Println("=== Constants ===")
+	fmt.Println()
+
+	// 1. Basic usage
+	fmt.Println("App:", AppName)
+	fmt.Println("Pi:", Pi)
+	fmt.Println("MaxRetries:", MaxRetries)
+
+	// 2. Untyped constant adapts
+	fmt.Println("\n-- Untyped constants --")
+	var f32 float32 = untypedInt // works: untyped adapts to float32
+	var f64 float64 = untypedInt // works: untyped adapts to float64
+	var i64 int64 = untypedInt   // works: untyped adapts to int64
+	fmt.Printf("float32: %f, float64: %f, int64: %d\n", f32, f64, i64)
+
+	// Typed constant is strict:
+	// var f float64 = typedInt // ERROR: cannot use int as float64
+	_ = typedInt
+
+	// 3. Constant expressions
+	fmt.Println("\n-- Constant expressions --")
+	const x = 10
+	const y = 20
+	const sum = x + y
+	const product = x * y
+	fmt.Printf("sum=%d, product=%d\n", sum, product)
+
+	// 4. High-precision untyped constants
+	fmt.Println("\n-- High precision --")
+	const huge = 1e1000 // this is fine as a constant
+	// var v float64 = huge // ERROR: overflows float64
+	const small = huge / 1e999
+	fmt.Println("huge/1e999 =", small) // 10
+
+	// 5. Math constants
+	fmt.Println("\n-- Math --")
+	fmt.Println("math.Pi:", math.Pi)
+	fmt.Println("math.E:", math.E)
+	fmt.Println("math.MaxInt64:", math.MaxInt64)
+}

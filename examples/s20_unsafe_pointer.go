@@ -25,17 +25,17 @@ import (
 )
 
 type Example struct {
-	A bool   // 1 byte
-	B int32  // 4 bytes
-	C int64  // 8 bytes
-	D bool   // 1 byte
+	A bool  // 1 byte
+	B int32 // 4 bytes
+	C int64 // 8 bytes
+	D bool  // 1 byte
 }
 
 type Compact struct {
-	C int64  // 8 bytes
-	B int32  // 4 bytes
-	A bool   // 1 byte
-	D bool   // 1 byte
+	C int64 // 8 bytes
+	B int32 // 4 bytes
+	A bool  // 1 byte
+	D bool  // 1 byte
 	// Total: 16 bytes (better alignment)
 }
 
@@ -52,8 +52,8 @@ func main() {
 	fmt.Println("int16:", unsafe.Sizeof(int16(0)))
 	fmt.Println("int32:", unsafe.Sizeof(int32(0)))
 	fmt.Println("int64:", unsafe.Sizeof(int64(0)))
-	fmt.Println("int:", unsafe.Sizeof(int(0))) // platform-dependent (8 on 64-bit)
-	fmt.Println("string:", unsafe.Sizeof(""))  // 16 (pointer + length)
+	fmt.Println("int:", unsafe.Sizeof(int(0)))    // platform-dependent (8 on 64-bit)
+	fmt.Println("string:", unsafe.Sizeof(""))     // 16 (pointer + length)
 	fmt.Println("slice:", unsafe.Sizeof([]int{})) // 24 (pointer + length + cap)
 
 	// ─────────────────────────────────────────────

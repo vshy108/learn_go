@@ -1,13 +1,9 @@
 //go:build ignore
 
-// Section 6, Topic 50: Multi-Dimensional Slices
+// Section 6, Topic 50: Multi-dimensional Slices
 //
-// Go doesn't have a built-in multi-dimensional array/slice type.
-// You create them as slices of slices: [][]int
-//
-// GOTCHA: Rows can have different lengths (jagged arrays).
-// GOTCHA: Each row is independently allocated — not contiguous memory.
-//         For performance-critical apps, use a flat slice with manual indexing.
+// Go has no built-in 2D slice. Use slice of slices.
+// Each inner slice can have different lengths (jagged).
 //
 // Run: go run examples/s06_multidimensional.go
 
@@ -16,85 +12,51 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("=== Multi-Dimensional Slices ===")
+	fmt.Println("=== Multi-dimensional Slices ===")
 	fmt.Println()
 
-	// ─────────────────────────────────────────────
-	// 1. 2D slice with literal
-	// ─────────────────────────────────────────────
-	fmt.Println("-- 2D literal --")
+	// 1. 2D slice literal
 	matrix := [][]int{
 		{1, 2, 3},
 		{4, 5, 6},
 		{7, 8, 9},
 	}
-	for i, row := range matrix {
-		fmt.Printf("  Row %d: %v\n", i, row)
+	fmt.Println("-- 3x3 matrix --")
+	for _, row := range matrix {
+		fmt.Println(" ", row)
 	}
-	fmt.Printf("  matrix[1][2] = %d\n", matrix[1][2]) // 6
+	fmt.Printf("matrix[1][2] = %d\n", matrix[1][2])
 
-	// ─────────────────────────────────────────────
-	// 2. 2D slice with make (dynamic size)
-	// ─────────────────────────────────────────────
-	fmt.Println("\n-- 2D with make --")
+	// 2. Dynamic allocation with make
+	fmt.Println("\n-- Dynamic 2D --")
 	rows, cols := 3, 4
 	grid := make([][]int, rows)
 	for i := range grid {
 		grid[i] = make([]int, cols)
-	}
-	// Fill with values:
-	for i := 0; i < rows; i++ {
-		for j := 0; j < cols; j++ {
+		for j := range grid[i] {
 			grid[i][j] = i*cols + j
 		}
 	}
-	for i, row := range grid {
-		fmt.Printf("  Row %d: %v\n", i, row)
+	for _, row := range grid {
+		fmt.Println(" ", row)
 	}
 
-	// ─────────────────────────────────────────────
-	// 3. Jagged (non-rectangular)
-	// ─────────────────────────────────────────────
-	fmt.Println("\n-- Jagged (different row lengths) --")
-	triangle := [][]int{
+	// 3. Jagged (irregular) slices
+	fmt.Println("\n-- Jagged --")
+	jagged := [][]int{
 		{1},
-		{1, 1},
-		{1, 2, 1},
-		{1, 3, 3, 1},
-		{1, 4, 6, 4, 1},
+		{2, 3},
+		{4, 5, 6},
+		{7, 8, 9, 10},
+	}
+	for i, row := range jagged {
+		fmt.Printf("  row %d (len %d): %v\n", i, len(row), row)
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}	}		fmt.Printf("  %v\n", row)	for _, row := range board {	board[2][2] = "X"	board[1][1] = "O"	board[0][0] = "X"	var board [3][3]string	fmt.Println("\n-- 2D array (fixed size) --")	// ─────────────────────────────────────────────	// 5. 2D array (fixed size)	// ─────────────────────────────────────────────	// This is cache-friendly and used in performance-critical code.	}		fmt.Printf("  Row %d: %v\n", i, row)		row := flat[i*c : (i+1)*c]	for i := 0; i < r; i++ {	// Access as 2D:	}		}			flat[i*c+j] = i*c + j		for j := 0; j < c; j++ {	for i := 0; i < r; i++ {	flat := make([]int, r*c)	r, c := 3, 4	fmt.Println("\n-- Flat slice (contiguous memory) --")	// ─────────────────────────────────────────────	// 4. Flat slice with manual indexing (performance)	// ─────────────────────────────────────────────	}		fmt.Printf("  %v\n", row)	for _, row := range triangle {	}
+	// 4. 2D array (fixed size)
+	fmt.Println("\n-- 2D array (fixed) --")
+	var arr [2][3]int
+	arr[0] = [3]int{1, 2, 3}
+	arr[1] = [3]int{4, 5, 6}
+	fmt.Println(" ", arr)
+}

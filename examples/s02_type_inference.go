@@ -2,115 +2,59 @@
 
 // Section 2, Topic 10: Type Inference Rules
 //
-// Go can infer the type of a variable from the right-hand side expression.
-// The rules are straightforward but have some surprises with numeric literals.
+// Go infers types from the right-hand side of := and var x = expr.
 //
-// Key rules:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}	return a + bfunc add(a, b int) int {}	// Go's inference is determined entirely by the right-hand side expression.	// Key difference: Rust's inference can change based on usage downstream.	//	// Rust: let x = 3.14; → f64	// Go:   x := 3.14     → float64	// Rust: let x = 42;   → i32 (default, but can be inferred differently)	// Go:   x := 42       → int (always)	// ─────────────────────────────────────────────	// 7. Comparison: Go vs Rust type inference	// ─────────────────────────────────────────────	// The type propagates through the chain.	fmt.Printf("v1=%T, v2=%T, v3=%T\n", v1, v2, v3)	v3 := v2 + 1   // int (int + untyped constant)	v2 := v1       // int (inferred from v1)	v1 := 42       // int	fmt.Println("\n-- Inference chain --")	// ─────────────────────────────────────────────	// 6. Inference chain	// ─────────────────────────────────────────────	fmt.Printf("3.14 → %T, float32(3.14) → %T\n", f2, f32)	fmt.Printf("42  → %T, int32(42)  → %T\n", n, n32)	f32 := float32(3.14)	n32 := int32(42)	// If you need a specific type, use explicit conversion:	f2 := 3.14 // always float64, never float32	n := 42    // always int, never int8/int16/int32/int64	fmt.Println("\n-- := gives concrete types --")	// ─────────────────────────────────────────────	// 5. GOTCHA: := always infers concrete types	// ─────────────────────────────────────────────	// var f32 float32 = typed  // ERROR: cannot use typed (int) as float32	const typed int = 42	// But once a constant has a type, it's fixed:	fmt.Printf("const 42 → int8=%d, int64=%d, float64=%f\n", i8, i64, f64)	var f64 float64 = x // OK: 42 can be float64	var i64 int64 = x  // OK: 42 fits in int64	var i8 int8 = x   // OK: 42 fits in int8	const x = 42 // untyped int constant	// Untyped constants can be used in expressions with any compatible type:	fmt.Println("\n-- Untyped constant flexibility --")	// ─────────────────────────────────────────────	// 4. GOTCHA: Untyped constants are flexible	// ─────────────────────────────────────────────	fmt.Printf("add(1,2) → %T = %d\n", result, result)	result := add(1, 2) // inferred from function return type	fmt.Println("\n-- Inference from function returns --")	// ─────────────────────────────────────────────	// 3. Inference from function returns	// ─────────────────────────────────────────────	fmt.Printf("b * 2.0 → %T\n", product)	fmt.Printf("a + 10 → %T\n", sum)	product := b * 2.0  // float64 * untyped constant → float64	sum := a + 10       // int + untyped constant → int	fmt.Println("\n-- Inference from expressions --")	// ─────────────────────────────────────────────	// 2. Inference from expressions	// ─────────────────────────────────────────────	fmt.Printf("true    → %T\n", f) // bool	fmt.Printf("\"hello\" → %T\n", e) // string	fmt.Printf("'A'     → %T\n", d) // int32	fmt.Printf("1+2i    → %T\n", c) // complex128	fmt.Printf("3.14    → %T\n", b) // float64	fmt.Printf("42      → %T\n", a) // int	fmt.Println("-- Inferred types --")	f := true         // bool	e := "hello"      // string	d := 'A'          // int32 (rune)	c := 1 + 2i      // complex128	b := 3.14        // float64 (NOT float32)	a := 42          // int (NOT int32 or int64)	// ─────────────────────────────────────────────	// 1. Numeric literal inference	// ─────────────────────────────────────────────	fmt.Println()	fmt.Println("=== Type Inference ===")func main() {import "fmt"package main// Run: go run examples/s02_type_inference.go////         C (depends on literal suffix). There is no int literal suffix in Go.// GOTCHA: Go defaults to int/float64, which differs from Rust (i32/f64) and////   - Untyped bool constant → bool//   - Untyped string constant → string//   - Untyped rune constant → int32 (rune is alias for int32)//   - Untyped complex constant → complex128//   - Untyped float constant → float64//   - Untyped integer constant → int (platform-dependent size: 32 or 64 bit)
+// GOTCHA: Numeric literals default to int (not int32/int64).
+// GOTCHA: Float literals default to float64 (not float32).
+// GOTCHA: Untyped constants have a "default type" used during inference.
+//
+// Run: go run examples/s02_type_inference.go
+
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("=== Type Inference ===")
+	fmt.Println()
+
+	// 1. Integer literals -> int
+	a := 42
+	fmt.Printf("42 -> %T\n", a) // int
+
+	// 2. Float literals -> float64
+	b := 3.14
+	fmt.Printf("3.14 -> %T\n", b) // float64
+
+	// 3. String literal -> string
+	c := "hello"
+	fmt.Printf("\"hello\" -> %T\n", c) // string
+
+	// 4. Bool literal -> bool
+	d := true
+	fmt.Printf("true -> %T\n", d) // bool
+
+	// 5. Rune literal -> int32
+	e := 'A'
+	fmt.Printf("'A' -> %T (rune = int32)\n", e)
+
+	// 6. Complex literal -> complex128
+	f := 1 + 2i
+	fmt.Printf("1+2i -> %T\n", f)
+
+	// 7. From function return type
+	g := sum(3, 4)
+	fmt.Printf("sum(3,4) -> %T\n", g)
+
+	// 8. From expression
+	h := a * 2 // int * untyped int -> int
+	fmt.Printf("a * 2 -> %T\n", h)
+
+	// 9. Mixed: float64 wins over int
+	i := float64(a) + b
+	fmt.Printf("float64(a) + b -> %T\n", i)
+}
+
+func sum(a, b int) int {
+	return a + b
+}

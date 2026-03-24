@@ -91,6 +91,6 @@ func main() {
 	fmt.Println("Logger Name:", mgr.Logger.Name)
 
 	// Non-ambiguous promoted method:
-	mgr.Log("starting work") // from Logger
+	mgr.Log("starting work")       // from Logger
 	fmt.Println("City:", mgr.City) // from Employee → Address
 }

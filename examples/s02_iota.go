@@ -1,149 +1,83 @@
 //go:build ignore
 
-// Section 2, Topic 12: iota — Enumerator for Constants
+// Section 2, Topic 12: iota Enumerator
 //
-// `iota` is Go's constant generator. It starts at 0 in each `const` block and
-// increments by 1 for each constant specification. It's Go's equivalent of
-// C's enum or Rust's enum variants with explicit numbering.
+// iota is Go's auto-incrementing constant generator.
+// It resets to 0 at each const block and increments per line.
 //
-// GOTCHA: iota resets to 0 in EVERY new const block.
-// GOTCHA: iota increments per SPECIFICATION (line), not per constant.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}	return days[d]	}		return "Unknown"	if d < 0 || d > 6 {	days := [...]string{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}func dayName(d int) string {}	// You can create a Month with value 999 and Go won't complain.	// Go's iota is just a constant generator — no type safety for "enum" values.	// Rust enums are more powerful (can hold data, are exhaustively matched).	//	// Rust: enum Color { Red, Green, Blue }  — Red=0, Green=1, Blue=2	// Go:   const ( A = iota; B; C )   — A=0, B=1, C=2	// ─────────────────────────────────────────────	// Comparison: Go iota vs Rust enum	// ─────────────────────────────────────────────	}		fmt.Printf("  %d = %s\n", d, dayName(d))	for d := Sunday; d <= Saturday; d++ {	fmt.Println("\n-- String method for iota enums --")	// ─────────────────────────────────────────────	// 7. Pattern: String representation for iota enums	// ─────────────────────────────────────────────	// )	//     C, D               // C=1, D=1	//     A, B = iota, iota  // A=0, B=0 (same iota!)	// const (	// When multiple constants are on the same line, they get the SAME iota value:	fmt.Println("\n-- GOTCHA: multiple constants on same line --")	// ─────────────────────────────────────────────	// 6. GOTCHA: iota in same line	// ─────────────────────────────────────────────	fmt.Printf("A=%d, B=%d, C=%d\n", A, B, C)	fmt.Println("\n-- iota resets per const block --")	// --- Reset demonstration ---	fmt.Printf("January=%d, February=%d, May=%d\n", January, February, May)	fmt.Println("\n-- Months --")	// --- Months starting at 1 ---	fmt.Printf("Has Execute? %t\n", readWrite&Execute != 0)	fmt.Printf("Has Read?    %t\n", readWrite&Read != 0)	// Checking permissions with bitwise AND:	fmt.Printf("Read|Write=%d (0b%08b)\n", readWrite, readWrite)	readWrite := Read | Write	// Combining permissions with bitwise OR:	fmt.Printf("Execute=%d (0b%08b)\n", Execute, Execute)	fmt.Printf("Write=%d (0b%08b)\n", Write, Write)	fmt.Printf("Read=%d (0b%08b)\n", Read, Read)	fmt.Println("\n-- Permissions (bitmask) --")	// --- Permissions (bit flags) ---	fmt.Printf("KB=%.0f, MB=%.0f, GB=%.0f, TB=%.0f\n", float64(KB), float64(MB), float64(GB), float64(TB))	fmt.Println("\n-- Byte sizes --")	// --- Byte sizes ---	fmt.Printf("Sunday=%d, Monday=%d, Saturday=%d\n", Sunday, Monday, Saturday)	fmt.Println("-- Days --")	// --- Days of the week ---	fmt.Println()	fmt.Println("=== iota Enumerator ===")func main() {)	C        // 2	B        // 1	A = iota // 0 — resets!const (// ─────────────────────────────────────────────// 5. iota resets in each const block// ─────────────────────────────────────────────)	May                      // 5	April                    // 4	March                    // 3	February                 // 2	January Month = iota + 1 // 1const (type Month int// ─────────────────────────────────────────────// 4. iota starting at 1// ─────────────────────────────────────────────)	Execute                        // 4 (bit 2)	Write                          // 2 (bit 1)	Read    Permission = 1 << iota // 1 (bit 0)const (type Permission uint8// ─────────────────────────────────────────────// 3. iota for bit flags (bitmask pattern)// ─────────────────────────────────────────────)	PB                              // 1 << 50	TB                              // 1 << 40	GB                              // 1 << 30 = 1073741824	MB                              // 1 << 20 = 1048576	KB ByteSize = 1 << (10 * iota) // 1 << 10 = 1024	_           = iota             // 0 — skip with blank identifierconst (type ByteSize float64// ─────────────────────────────────────────────// 2. iota with expression (applied to all)// ─────────────────────────────────────────────)	Saturday         // 6	Friday           // 5	Thursday         // 4	Wednesday        // 3	Tuesday          // 2	Monday           // 1 (iota is implicitly repeated)	Sunday    = iota // 0const (// ─────────────────────────────────────────────// 1. Basic iota (starts at 0)// ─────────────────────────────────────────────import "fmt"package main// Run: go run examples/s02_iota.go//// GOTCHA: Skipping a value with _ still increments iota.
+// GOTCHA: iota increments per SPEC LINE, not per use.
+// GOTCHA: Skipping a value with _ still increments iota.
+// GOTCHA: iota resets in each new const block.
+//
+// Run: go run examples/s02_iota.go
+
+package main
+
+import "fmt"
+
+// 1. Basic enum
+type Weekday int
+
+const (
+	Sunday    Weekday = iota // 0
+	Monday                   // 1
+	Tuesday                  // 2
+	Wednesday                // 3
+	Thursday                 // 4
+	Friday                   // 5
+	Saturday                 // 6
+)
+
+// 2. Skip values with _
+type Permission int
+
+const (
+	Read    Permission = 1 << iota // 1
+	Write                          // 2
+	Execute                        // 4
+	_                              // 8 (skipped)
+	Admin                          // 16
+)
+
+// 3. Custom starting value
+type HTTPStatus int
+
+const (
+	StatusOK            HTTPStatus = iota + 200 // 200
+	StatusCreated                                // 201
+	StatusAccepted                               // 202
+	StatusNoContent     HTTPStatus = iota + 200 // 203
+)
+
+// 4. iota resets in new block
+const (
+	A = iota // 0 (reset)
+	B        // 1
+	C        // 2
+)
+
+func main() {
+	fmt.Println("=== iota ===")
+	fmt.Println()
+
+	// Weekdays
+	fmt.Println("-- Weekdays --")
+	fmt.Printf("Sunday=%d, Monday=%d, Saturday=%d\n", Sunday, Monday, Saturday)
+
+	// Bit flags
+	fmt.Println("\n-- Permissions (bit flags) --")
+	fmt.Printf("Read=%d, Write=%d, Execute=%d, Admin=%d\n",
+		Read, Write, Execute, Admin)
+	perms := Read | Write
+	fmt.Printf("Read|Write = %d, has Read: %t, has Execute: %t\n",
+		perms, perms&Read != 0, perms&Execute != 0)
+
+	// HTTP Status
+	fmt.Println("\n-- HTTP Status --")
+	fmt.Printf("OK=%d, Created=%d, Accepted=%d, NoContent=%d\n",
+		StatusOK, StatusCreated, StatusAccepted, StatusNoContent)
+
+	// Reset demonstration
+	fmt.Println("\n-- Reset per block --")
+	fmt.Printf("A=%d, B=%d, C=%d\n", A, B, C)
+}

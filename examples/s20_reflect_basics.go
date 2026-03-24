@@ -45,9 +45,9 @@ func main() {
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Type inspection --")
 	t := reflect.TypeOf(u)
-	fmt.Println("Type:", t)            // main.User
-	fmt.Println("Kind:", t.Kind())     // struct
-	fmt.Println("Name:", t.Name())     // User
+	fmt.Println("Type:", t)        // main.User
+	fmt.Println("Kind:", t.Kind()) // struct
+	fmt.Println("Name:", t.Name()) // User
 	fmt.Println("NumField:", t.NumField())
 
 	// ─────────────────────────────────────────────

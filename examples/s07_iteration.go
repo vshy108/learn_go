@@ -69,7 +69,7 @@ func main() {
 		"remove2": 4,
 	}
 	for k := range data {
-		if k[:6] == "remove" {
+		if len(k) >= 6 && k[:6] == "remove" {
 			delete(data, k)
 		}
 	}

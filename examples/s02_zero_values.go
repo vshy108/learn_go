@@ -2,129 +2,62 @@
 
 // Section 2, Topic 9: Zero Values for All Types
 //
-// In Go, every variable is initialized to its "zero value" if no initializer
-// is provided. There is NO concept of "uninitialized memory" in safe Go.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}	// differently in JSON: nil → null, empty → []	// All three behave the same for most operations, but they serialize	fmt.Printf("make(0):    nil=%t, len=%d\n", makeSlice == nil, len(makeSlice))	fmt.Printf("empty lit:  nil=%t, len=%d\n", emptySlice == nil, len(emptySlice))	fmt.Printf("nil slice:  nil=%t, len=%d\n", nilSlice == nil, len(nilSlice))	makeSlice := make([]int, 0)  // not nil, but empty	emptySlice := []int{}        // not nil, but empty	var nilSlice []int           // nil	// A nil slice and an empty slice are different:	fmt.Println("\n-- Zero vs empty --")	// ─────────────────────────────────────────────	// 7. GOTCHA: Zero value is NOT the same as "empty"	// ─────────────────────────────────────────────	fmt.Printf("After make: %v\n", m)	m["key"] = 1 // now safe	m = make(map[string]int)	// Always initialize maps before writing:	// m["key"] = 1  // PANIC: assignment to entry in nil map	fmt.Printf("nil map read: %d\n", m["key"]) // returns zero value (0)	// nil map: safe to read, but PANICS on write!	fmt.Printf("After append: %v\n", sl)	sl = append(sl, 1, 2, 3) // append works on nil slice!	fmt.Printf("len(nil slice)=%d, cap=%d\n", len(sl), cap(sl))	// nil slice: safe to read, append, get length	fmt.Println("\n-- nil slice vs nil map --")	// ─────────────────────────────────────────────	// 6. GOTCHA: nil slice vs nil map behavior	// ─────────────────────────────────────────────	fmt.Printf("[3]string: %q\n", sarr)  // ["" "" ""]	fmt.Printf("[5]int:    %v\n", arr)   // [0 0 0 0 0]	fmt.Println("\n-- Array zero values --")	var sarr [3]string	var arr [5]int	// ─────────────────────────────────────────────	// 5. Array zero value (all elements set to zero value of element type)	// ─────────────────────────────────────────────	fmt.Printf("Person: %+v\n", person) // {Name: Age:0 Active:false}	fmt.Println("\n-- Struct zero value --")	var person Person	// ─────────────────────────────────────────────	// 4. Struct zero value (all fields set to their zero values)	// ─────────────────────────────────────────────	fmt.Printf("interface: %v (nil=%t)\n", iface, iface == nil)	fmt.Printf("function:  %v (nil=%t)\n", fn, fn == nil)	fmt.Printf("channel:   %v (nil=%t)\n", ch, ch == nil)	fmt.Printf("map:       %v (nil=%t)\n", m, m == nil)	fmt.Printf("slice:     %v (nil=%t)\n", sl, sl == nil)	fmt.Printf("pointer:   %v (nil=%t)\n", p, p == nil)	fmt.Println("\n-- Reference type zero values (all nil) --")	var iface interface{}	var fn func()	var ch chan int	var m map[string]int	var sl []int	var p *int	// ─────────────────────────────────────────────	// 3. Pointer, slice, map, channel, function, interface	// ─────────────────────────────────────────────	fmt.Printf("bool=%t\n", b)                     // false	fmt.Printf("string=%q (len=%d)\n", s, len(s)) // "" (len=0)	fmt.Println("\n-- String and bool --")	var b bool	var s string	// ─────────────────────────────────────────────	// 2. String and bool	// ─────────────────────────────────────────────	fmt.Printf("complex64=%v, complex128=%v\n", c64, c128)	fmt.Printf("float32=%f, float64=%f\n", f32, f64)	fmt.Printf("uintptr=%d\n", uptr)	fmt.Printf("uint=%d, uint8=%d, uint16=%d, uint32=%d, uint64=%d\n", u, u8, u16, u32, u64)	fmt.Printf("int=%d, int8=%d, int16=%d, int32=%d, int64=%d\n", i, i8, i16, i32, i64)	fmt.Println("-- Numeric zero values --")	var c128 complex128	var c64 complex64	var f64 float64	var f32 float32	var uptr uintptr	var u64 uint64	var u32 uint32	var u16 uint16	var u8 uint8	var u uint	var i64 int64	var i32 int32	var i16 int16	var i8 int8	var i int	// ─────────────────────────────────────────────	// 1. Numeric types	// ─────────────────────────────────────────────	fmt.Println()	fmt.Println("=== Zero Values ===")func main() {}	Active bool	Age  int	Name stringtype Person struct {// Custom struct to show zero values of composite typesimport "fmt"package main// Run: go run examples/s02_zero_values.go//// variables is a compile error, and C, where it's undefined behavior.)// haven't explicitly set it. (Compare with Rust, where reading uninitialized// This is a key safety feature: you can always read a variable, even if you//
+// Every type in Go has a zero value - the default when not initialized.
+// There is NO undefined/null for most types.
+//
+// GOTCHA: Zero value of a pointer is nil (the only "null" in Go).
+// GOTCHA: Zero value of a slice/map/channel is nil, but they behave differently.
+//
+// Run: go run examples/s02_zero_values.go
+
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("=== Zero Values ===")
+	fmt.Println()
+
+	// Numeric types
+	var i int
+	var i8 int8
+	var i64 int64
+	var u uint
+	var f32 float32
+	var f64 float64
+	var c64 complex64
+	fmt.Println("-- Numeric --")
+	fmt.Printf("int: %d, int8: %d, int64: %d, uint: %d\n", i, i8, i64, u)
+	fmt.Printf("float32: %f, float64: %f, complex64: %v\n", f32, f64, c64)
+
+	// String and bool
+	var s string
+	var b bool
+	fmt.Println("\n-- String & Bool --")
+	fmt.Printf("string: %q (empty, not nil), bool: %t\n", s, b)
+
+	// Pointer, slice, map, channel, function, interface
+	var ptr *int
+	var sl []int
+	var m map[string]int
+	var ch chan int
+	var fn func()
+	var iface interface{}
+	fmt.Println("\n-- Reference types (all nil) --")
+	fmt.Printf("*int: %v, []int: %v, map: %v, chan: %v, func: %v, interface: %v\n",
+		ptr, sl, m, ch, fn, iface)
+	fmt.Printf("slice==nil: %t, map==nil: %t\n", sl == nil, m == nil)
+
+	// Struct zero value
+	type Point struct {
+		X, Y int
+	}
+	var p Point
+	fmt.Println("\n-- Struct --")
+	fmt.Printf("Point: %+v (fields are zero-valued)\n", p)
+
+	// Array zero value
+	var arr [3]int
+	fmt.Println("\n-- Array --")
+	fmt.Printf("[3]int: %v\n", arr)
+}

@@ -1,112 +1,71 @@
 //go:build ignore
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}	// Go has no `let` — variables are declared with `var` or `:=`.	// Go has no `mut` keyword — all variables are mutable.	//	// Python: name = "Python"     (type inferred, mutable, no declaration needed)	// Rust:   let name = "Rust";  (type inferred, immutable by default)	// Go:     name := "Go"        (type inferred, mutable by default)	// ─────────────────────────────────────────────	// 8. Comparison: Go := vs Rust let vs Python =	// ─────────────────────────────────────────────	fmt.Printf("int32(42) → %T, float32(3.14) → %T\n", n32, f32)	f32 := float32(3.14)	n32 := int32(42)	// To get a specific type, use explicit conversion:	fmt.Printf("42 → %T, 3.14 → %T, 1+2i → %T\n", n, f, c)	fmt.Printf("\n-- Inferred types --\n")	c := 1 + 2i    // complex128	f := 3.14      // float64 (not float32)	n := 42        // int (not int32 or int64)	// ─────────────────────────────────────────────	// 7. Type of numeric literals	// ─────────────────────────────────────────────	// You must use `var` at package level.	//   name := "Go"  // syntax error: non-declaration statement outside function body	// At the top of the file, this would be a syntax error:	// ─────────────────────────────────────────────	// 6. GOTCHA: := cannot be used at package level	// ─────────────────────────────────────────────	fmt.Println("After assign:", msg) // "modified"	}		msg = "modified" // assigns to outer `msg`	if true {	// To modify the OUTER variable, use = not :=	fmt.Println("After if:", msg) // still "outer" — the inner `msg` is gone	}		fmt.Println("Inside if:", msg)		msg := "inner" // NEW variable in inner scope (shadow!)	if true {	fmt.Println("Before if:", msg)	fmt.Println("\n-- Shadowing --")	msg := "outer"	// ─────────────────────────────────────────────	// 5. GOTCHA: Shadowing with :=	// ─────────────────────────────────────────────	// val2, err := anotherFunction()  // err is reassigned, val2 is new	// val, err := someFunction()  // first call	// This is commonly used with error returns:	fmt.Printf("a=%d, b=%d\n", a, b)	a, b := 2, 3 // `a` is reassigned, `b` is newly declared	a := 1	// The existing variables are simply reassigned.	// If at least ONE variable on the left is new, := is legal.	// ─────────────────────────────────────────────	// 4. SPECIAL CASE: := with at least one new variable	// ─────────────────────────────────────────────	fmt.Printf("count=%d\n", count)	// count := 30  // ERROR: no new variables on left side of :=	count = 20    // assigns (variable already exists)	count := 10   // declares and initializes	// ─────────────────────────────────────────────	// 3. := vs = (declaration vs assignment)	// ─────────────────────────────────────────────	fmt.Printf("%s: %.1f, passed=%t\n", firstName, score, passed)	firstName, score, passed := "Alice", 95.5, true	// Mixed types:	fmt.Printf("x=%d, y=%d, z=%d\n", x, y, z)	x, y, z := 1, 2, 3	// ─────────────────────────────────────────────	// 2. Multiple variables	// ─────────────────────────────────────────────	fmt.Printf("name=%s, age=%d, pi=%.2f, awesome=%t\n", name, age, pi, isAwesome)	isAwesome := true   // inferred as bool	pi := 3.14159      // inferred as float64	age := 10          // inferred as int	name := "Gopher"  // inferred as string	// ─────────────────────────────────────────────	// 1. Basic usage	// ─────────────────────────────────────────────	fmt.Println()	fmt.Println("=== Short Variable Declaration (:=) ===")func main() {import "fmt"package main// Run: go run examples/s02_short_declaration.go//// GOTCHA: `:=` in an inner scope creates a NEW variable (shadow), not reassign.//         on the left side — the others can be existing variables (re-assignment).// GOTCHA: `:=` with multiple variables only requires at least ONE new variable// GOTCHA: `:=` can ONLY be used inside functions, NOT at package level.//// It is the most common way to declare variables inside functions.// The `:=` operator declares AND initializes a variable with type inference.//// Section 2, Topic 8: Short variable declaration (:=)
+// Section 2, Topic 8: Short variable declaration (:=)
+//
+// := declares AND initializes a variable with type inference.
+// Only works inside functions (not at package level).
+//
+// GOTCHA: := requires at least one NEW variable on the left side.
+// GOTCHA: := in a new scope creates a new variable (shadowing).
+//
+// Run: go run examples/s02_short_declaration.go
+
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("=== Short Declaration := ===")
+	fmt.Println()
+
+	// 1. Basic usage
+	name := "Alice"
+	age := 30
+	height := 5.9
+	fmt.Printf("name=%s (%T), age=%d (%T), height=%.1f (%T)\n",
+		name, name, age, age, height, height)
+
+	// 2. Multiple variables
+	x, y := 10, 20
+	fmt.Printf("x=%d, y=%d\n", x, y)
+
+	// 3. Redeclaration: at least one new variable required
+	x, z := 100, 300 // x is reassigned, z is new
+	fmt.Printf("x=%d, z=%d\n", x, z)
+
+	// 4. Shadowing in inner scope
+	fmt.Println("\n-- Shadowing --")
+	val := "outer"
+	fmt.Println("Before block:", val)
+	{
+		val := "inner" // new variable, shadows outer
+		fmt.Println("Inside block:", val)
+	}
+	fmt.Println("After block:", val) // still "outer"
+
+	// 5. Cannot use := at package level
+	// shortVar := "error" // would not compile outside func
+
+	// 6. Common pattern with error
+	result, err := divide(10, 3)
+	if err != nil {
+		fmt.Println("Error:", err)
+	} else {
+		fmt.Printf("10 / 3 = %.2f\n", result)
+	}
+
+	// Reuse err (only result2 is new):
+	result2, err := divide(10, 0)
+	if err != nil {
+		fmt.Println("Error:", err)
+	} else {
+		fmt.Printf("10 / 0 = %.2f\n", result2)
+	}
+}
+
+func divide(a, b float64) (float64, error) {
+	if b == 0 {
+		return 0, fmt.Errorf("division by zero")
+	}
+	return a / b, nil
+}

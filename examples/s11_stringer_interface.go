@@ -71,9 +71,9 @@ func main() {
 	// Automatic use by fmt
 	// ─────────────────────────────────────────────
 	p := Point{3, 4}
-	fmt.Println("Point:", p)             // uses String()
-	fmt.Printf("Printf %%v: %v\n", p)   // uses String()
-	fmt.Printf("Printf %%s: %s\n", p)   // uses String()
+	fmt.Println("Point:", p)          // uses String()
+	fmt.Printf("Printf %%v: %v\n", p) // uses String()
+	fmt.Printf("Printf %%s: %s\n", p) // uses String()
 
 	ip := IPAddress{192, 168, 1, 1}
 	fmt.Println("IP:", ip)

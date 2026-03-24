@@ -32,9 +32,9 @@ func main() {
 	// ─────────────────────────────────────────────
 	fmt.Println("-- Runtime info --")
 	fmt.Println("OS:      ", runtime.GOOS)      // linux, darwin, windows
-	fmt.Println("Arch:    ", runtime.GOARCH)     // amd64, arm64
-	fmt.Println("Compiler:", runtime.Compiler)   // gc
-	fmt.Println("Version: ", runtime.Version())  // go1.22.x
+	fmt.Println("Arch:    ", runtime.GOARCH)    // amd64, arm64
+	fmt.Println("Compiler:", runtime.Compiler)  // gc
+	fmt.Println("Version: ", runtime.Version()) // go1.22.x
 
 	// ─────────────────────────────────────────────
 	// 2. Build tag syntax

@@ -1,113 +1,59 @@
 //go:build ignore
 
-// Section 2, Topic 7: var keyword — explicit types and zero values
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}	// _ = unused  // This would suppress the error	// This is Go's way of keeping code clean. Use _ to discard:	// var unused int  // ERROR: unused declared but not used	// ─────────────────────────────────────────────	// 7. GOTCHA: Unused local variables are compile errors	// ─────────────────────────────────────────────	fmt.Printf("App: %s v%d, debug=%t\n", appName, appVersion, debug)	fmt.Println(packageLevel)	fmt.Println("\n-- Package-level variables --")	// ─────────────────────────────────────────────	// 6. Package-level variables	// ─────────────────────────────────────────────	fmt.Printf("Outer scope name: %s\n", name) // still "Gopher"	}		fmt.Printf("\nInner scope name: %s\n", name)		var name string = "Bob" // shadows outer name	{	// But shadowing in inner scope IS allowed:	// var name string = "Bob"  // ERROR: name already declared in this block	// ─────────────────────────────────────────────	// 5. Redeclaration is NOT allowed	// ─────────────────────────────────────────────	fmt.Printf("%s %s scored %.1f\n", firstName, lastName, score)	)		score     float64 = 95.5		lastName  string  = "Smith"		firstName string  = "Alice"	var (	// Mixed types require a var block:	fmt.Printf("x=%d, y=%d, z=%d\n", x, y, z)	fmt.Println("\n-- Multiple declaration --")	var x, y, z int = 1, 2, 3	// ─────────────────────────────────────────────	// 4. Multiple variables in one line	// ─────────────────────────────────────────────	fmt.Printf("map:     %v (nil=%t)\n", m, m == nil)   // map[] (nil=true)	fmt.Printf("slice:   %v (nil=%t)\n", sl, sl == nil) // [] (nil=true)	fmt.Printf("pointer: %v\n", p)  // <nil>	fmt.Printf("bool:    %t\n", b)  // false	fmt.Printf("float64: %f\n", f)  // 0.000000	fmt.Printf("int:     %d\n", i)  // 0	fmt.Printf("string:  %q\n", s)  // ""	fmt.Println("\n-- Zero values --")	var m map[string]int // nil (nil map — reads ok, writes panic!)	var sl []int    // nil (nil slice)	var p *int      // nil	var b bool      // false	var f float64   // 0.0	var i int       // 0	var s string    // ""	// ─────────────────────────────────────────────	// 3. Zero values (no initializer)	// ─────────────────────────────────────────────		city, city, count, count, ratio, ratio)	fmt.Printf("city=%s (%T), count=%d (%T), ratio=%.2f (%T)\n",	var ratio = 0.75       // inferred as float64	var count = 42         // inferred as int	var city = "Singapore" // inferred as string	// ─────────────────────────────────────────────	// 2. var with type inference (type omitted)	// ─────────────────────────────────────────────	fmt.Printf("name=%s, age=%d, pi=%.2f\n", name, age, pi)	var pi float64 = 3.14159	var age int = 10	var name string = "Gopher"	// ─────────────────────────────────────────────	// 1. Basic var declaration with type	// ─────────────────────────────────────────────	fmt.Println()	fmt.Println("=== var Declaration ===")func main() {)	debug      = false	appVersion = 1	appName    = "learn_go"var (// Multiple package-level variables in a block (factored declaration):var packageLevel = "I'm accessible everywhere in this package"// Package-level variables — must use `var`, NOT `:=`import "fmt"package main// Run: go run examples/s02_var_declaration.go//// GOTCHA: `var` declarations can appear at package level; `:=` cannot.////         But unused LOCAL variables are a compile error!// GOTCHA: Unlike Rust, Go will NOT warn about unused variables at package level.////   int → 0, float64 → 0.0, string → "", bool → false, pointer → nil// Every type has a "zero value" — the default when no initializer is given://// package level (outside functions).// The `var` keyword allows explicit type annotation and is required at// Go has two ways to declare variables: `var` (verbose) and `:=` (short).//
+// Section 2, Topic 7: var keyword - explicit types and zero values
+//
+// var declares variables with explicit types. Uninitialized variables
+// get the type's ZERO VALUE (not undefined/null like other languages).
+//
+// GOTCHA: var at package level is global - use sparingly.
+// GOTCHA: Unused local variables are compile errors in Go.
+//
+// Run: go run examples/s02_var_declaration.go
+
+package main
+
+import "fmt"
+
+// Package-level var (no := allowed here)
+var packageVar = "I'm package-level"
+
+func main() {
+	fmt.Println("=== var Declaration ===")
+	fmt.Println()
+
+	// 1. Explicit type
+	var name string = "Alice"
+	var age int = 30
+	var height float64 = 5.9
+	fmt.Printf("name=%s, age=%d, height=%.1f\n", name, age, height)
+
+	// 2. Type inferred from value
+	var city = "Tokyo" // inferred as string
+	var count = 42     // inferred as int
+	fmt.Printf("city=%s (%T), count=%d (%T)\n", city, city, count, count)
+
+	// 3. Zero values (no initialization)
+	var zeroInt int
+	var zeroFloat float64
+	var zeroString string
+	var zeroBool bool
+	var zeroPtr *int
+	fmt.Println("\n-- Zero values --")
+	fmt.Printf("int: %d, float64: %f, string: %q, bool: %t, *int: %v\n",
+		zeroInt, zeroFloat, zeroString, zeroBool, zeroPtr)
+
+	// 4. Grouped declaration
+	var (
+		firstName = "Bob"
+		lastName  = "Smith"
+		score     = 95
+	)
+	fmt.Printf("\nGrouped: %s %s, score=%d\n", firstName, lastName, score)
+
+	// 5. Multiple same-type on one line
+	var x, y, z int = 1, 2, 3
+	fmt.Printf("x=%d, y=%d, z=%d\n", x, y, z)
+
+	// 6. Package-level
+	fmt.Println("\nPackage var:", packageVar)
+}
