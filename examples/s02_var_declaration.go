@@ -1,4 +1,3 @@
-package examples
 //go:build ignore
 
 // Section 2, Topic 7: var keyword — explicit types and zero values

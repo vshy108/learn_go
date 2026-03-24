@@ -1,4 +1,3 @@
-package examples
 //go:build ignore
 
 // Section 2, Topic 11: Constants — const keyword and untyped constants

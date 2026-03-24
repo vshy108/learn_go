@@ -1,4 +1,3 @@
-package examples
 //go:build ignore
 
 

@@ -1,4 +1,3 @@
-package examples
 //go:build ignore
 
 // Section 2, Topic 14: Variable Scope and Block Scoping
