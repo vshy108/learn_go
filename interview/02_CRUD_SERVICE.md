@@ -1,6 +1,5 @@
 # Interview Prep: CRUD Service
 
-> Target role: Full Stack Software Developer (L3) at CyberOwl
 > Focus: Building CRUD services in Go, database interactions, full implementation patterns
 
 ---

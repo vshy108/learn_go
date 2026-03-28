@@ -1,6 +1,5 @@
 # Interview Prep: Basic API Design
 
-> Target role: Full Stack Software Developer (L3) at CyberOwl
 > Focus: RESTful API design, HTTP fundamentals, Go backend
 
 ---
@@ -174,7 +173,7 @@ Three common strategies:
 | Strategy | Example | Pros | Cons |
 |----------|---------|------|------|
 | **URL path** | `/api/v1/vessels` | Simple, explicit, cacheable | URL changes on version bump |
-| **Header** | `Accept: application/vnd.cyberowl.v1+json` | Clean URLs | Hidden, harder to test in browser |
+| **Header** | `Accept: application/vnd.myapp.v1+json` | Clean URLs | Hidden, harder to test in browser |
 | **Query param** | `/vessels?version=1` | Easy to implement | Pollutes query string |
 
 **I prefer URL path versioning** because:
@@ -266,11 +265,11 @@ The server stores the key and returns the cached response on retries instead of 
 
 ---
 
-## Q9: How would you design an API for a maritime cybersecurity monitoring dashboard? (CyberOwl-specific)
+## Q9: How would you design an API for a monitoring dashboard?
 
 **Answer:**
 
-Given CyberOwl monitors vessel cybersecurity, I'd design resources around the domain:
+For a monitoring platform, I'd design resources around the domain:
 
 ```
 # Vessels
