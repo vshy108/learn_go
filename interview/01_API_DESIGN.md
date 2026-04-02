@@ -336,7 +336,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 - Always validate tokens server-side
 - Use HTTPS everywhere
 - Set token expiry short (15 min access, 7 day refresh)
-- Implement CORS properly for React frontend
+- Implement CORS properly for frontend clients
 - Sanitize all inputs to prevent injection
 
 ---

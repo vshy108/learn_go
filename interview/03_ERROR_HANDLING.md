@@ -1,6 +1,6 @@
 # Interview Prep: Error Handling
 
-> Focus: Error handling in Go, API error responses, TypeScript/React error patterns
+> Focus: Error handling in Go, API error responses
 
 ---
 
@@ -356,121 +356,7 @@ func ValidateCreateVessel(req CreateVesselRequest) error {
 
 ---
 
-## Q8: How do you handle errors in React/TypeScript on the frontend?
-
-**Answer:**
-
-### API error handling with fetch:
-```typescript
-// api/client.ts
-interface ApiError {
-  code: string;
-  message: string;
-  details?: { field: string; message: string }[];
-}
-
-async function apiRequest<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
-  });
-
-  if (!response.ok) {
-    const body = await response.json();
-    const error = body.error as ApiError;
-    throw new ApiRequestError(response.status, error);
-  }
-
-  return response.json();
-}
-
-class ApiRequestError extends Error {
-  constructor(
-    public status: number,
-    public apiError: ApiError,
-  ) {
-    super(apiError.message);
-    this.name = 'ApiRequestError';
-  }
-}
-```
-
-### Using in a React component:
-```tsx
-function CreateVesselForm() {
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [globalError, setGlobalError] = useState<string | null>(null);
-
-  async function handleSubmit(data: CreateVesselInput) {
-    try {
-      setFieldErrors({});
-      setGlobalError(null);
-      await apiRequest('/api/v1/vessels', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
-      // success → navigate or show toast
-    } catch (err) {
-      if (err instanceof ApiRequestError) {
-        if (err.status === 400 && err.apiError.details) {
-          // Map field errors for inline display
-          const errors: Record<string, string> = {};
-          for (const detail of err.apiError.details) {
-            errors[detail.field] = detail.message;
-          }
-          setFieldErrors(errors);
-        } else if (err.status === 409) {
-          setGlobalError('A vessel with this IMO already exists.');
-        } else {
-          setGlobalError('Something went wrong. Please try again.');
-        }
-      }
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <Input name="name" error={fieldErrors.name} />
-      <Input name="imo" error={fieldErrors.imo} />
-      {globalError && <Alert variant="destructive">{globalError}</Alert>}
-      <Button type="submit">Create</Button>
-    </form>
-  );
-}
-```
-
-### React Error Boundaries (for render-time crashes):
-```tsx
-import { ErrorBoundary } from 'react-error-boundary';
-
-function ErrorFallback({ error, resetErrorBoundary }) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre>{error.message}</pre>
-      <button onClick={resetErrorBoundary}>Try again</button>
-    </div>
-  );
-}
-
-// Wrap sections of your app
-<ErrorBoundary FallbackComponent={ErrorFallback}>
-  <VesselDashboard />
-</ErrorBoundary>
-```
-
-**Key points:**
-- **Error Boundaries** catch rendering errors (component crashes)
-- **try/catch** handles async errors (API calls)
-- Never show raw error messages to users — map to friendly messages
-- Show field-level errors inline for validation, global errors in a banner/toast
-
----
-
-## Q9: How do you handle errors with database operations gracefully?
+## Q8: How do you handle errors with database operations gracefully?
 
 **Answer:**
 
@@ -525,7 +411,7 @@ func (r *VesselRepository) Create(ctx context.Context, req CreateVesselRequest) 
 
 ---
 
-## Q10: How do you handle timeouts and context cancellation?
+## Q9: How do you handle timeouts and context cancellation?
 
 **Answer:**
 
@@ -566,7 +452,7 @@ func (h *VesselHandler) GetByID(w http.ResponseWriter, r *http.Request) error {
 
 ---
 
-## Q11: How do you log errors properly?
+## Q10: How do you log errors properly?
 
 **Answer:**
 
@@ -647,7 +533,7 @@ func ErrorHandler(h AppHandler) http.HandlerFunc {
 
 ---
 
-## Q12: What is the difference between recoverable and unrecoverable errors?
+## Q11: What is the difference between recoverable and unrecoverable errors?
 
 **Answer:**
 

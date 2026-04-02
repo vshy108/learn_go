@@ -1,198 +1,14 @@
 # Interview Prep: General Full Stack & Behavioral
 
-> Focus: TypeScript/React, Git, CI/CD, Docker, Agile, and behavioral questions
+> Focus: Git, CI/CD, Docker, Agile, and behavioral questions
 
 ---
 
-# Part A: TypeScript & React
+# Part A: Git & Version Control
 
 ---
 
-## Q1: What are the key differences between TypeScript and JavaScript?
-
-**Answer:**
-
-| Feature | JavaScript | TypeScript |
-|---------|-----------|-----------|
-| Type system | Dynamic (runtime) | Static (compile-time) |
-| Errors caught | At runtime | At compile time |
-| Interfaces | No | Yes |
-| Enums | No | Yes |
-| Generics | No | Yes |
-
-**Why TypeScript matters for a team:**
-- Catches bugs before code runs (typos, wrong argument types, missing properties)
-- Self-documenting — types serve as documentation
-- Better IDE support (autocomplete, refactoring)
-- Safer refactoring — rename a field and the compiler shows every place to update
-
-```typescript
-// TypeScript catches this at compile time
-interface Vessel {
-  id: string;
-  name: string;
-  imo: string;
-  status: 'active' | 'inactive'; // union type = only these values allowed
-}
-
-function getVesselLabel(vessel: Vessel): string {
-  return `${vessel.name} (${vessel.imo})`;
-}
-
-getVesselLabel({ id: '1', name: 'MV Pacific' }); // TS Error: missing 'imo' and 'status'
-```
-
----
-
-## Q2: Explain React component lifecycle and hooks.
-
-**Answer:**
-
-Modern React uses **function components + hooks** (not class components).
-
-### Core hooks:
-```tsx
-function VesselDashboard() {
-  // State — triggers re-render when updated
-  const [vessels, setVessels] = useState<Vessel[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Effect — runs side effects (API calls, subscriptions)
-  useEffect(() => {
-    async function fetchVessels() {
-      try {
-        const data = await api.getVessels();
-        setVessels(data);
-      } catch (err) {
-        setError('Failed to load vessels');
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchVessels();
-  }, []); // empty dependency array = run once on mount
-
-  // Memo — expensive computation, recalculate only when deps change
-  const activeVessels = useMemo(
-    () => vessels.filter(v => v.status === 'active'),
-    [vessels]
-  );
-
-  // Callback — stable function reference for child components
-  const handleSelect = useCallback((id: string) => {
-    // ...
-  }, []);
-
-  if (loading) return <Spinner />;
-  if (error) return <Alert>{error}</Alert>;
-
-  return <VesselList vessels={activeVessels} onSelect={handleSelect} />;
-}
-```
-
-**Key points:**
-- `useState` — local component state
-- `useEffect` — side effects (fetch data, event listeners). Cleanup with return function
-- `useMemo` — cache expensive computations
-- `useCallback` — cache function references (prevent unnecessary child re-renders)
-- `useRef` — mutable reference that doesn't trigger re-render
-
----
-
-## Q3: How do you manage state in a React application?
-
-**Answer:**
-
-It depends on the scope and complexity:
-
-| Scope | Solution | When to use |
-|-------|---------|-------------|
-| **Local** | `useState` | Form inputs, toggles, single component |
-| **Shared (small)** | `useContext` + `useReducer` | Theme, auth, 2-3 components sharing state |
-| **Server state** | React Query / TanStack Query | API data (caching, refetch, loading states) |
-| **Complex global** | Zustand or Redux Toolkit | Large app, many components, complex interactions |
-
-**For a data-heavy dashboard, I'd recommend React Query:**
-```tsx
-function useVessels() {
-  return useQuery({
-    queryKey: ['vessels'],
-    queryFn: () => api.getVessels(),
-    staleTime: 30_000, // data is fresh for 30s
-    refetchInterval: 60_000, // auto-refresh every 60s (live dashboard)
-  });
-}
-
-function VesselList() {
-  const { data, isLoading, error } = useVessels();
-  // React Query handles caching, deduplication, background refetching
-}
-```
-
-**Why React Query for a cybersecurity dashboard:**
-- Auto-refetch keeps data fresh (critical for monitoring)
-- Built-in loading/error states
-- Cache deduplication — multiple components using the same query share one request
-- Optimistic updates for quick UI feedback
-
----
-
-## Q4: What is a design system / component library and how do you contribute to one?
-
-**Answer:**
-
-A **design system** is a collection of reusable UI components with consistent styling and behavior. (The JD mentions "contributing to shared design systems.")
-
-**Structure:**
-```
-components/
-  Button/
-    Button.tsx        ← component
-    Button.styles.ts  ← styled-components or CSS modules
-    Button.test.tsx   ← tests
-    Button.stories.tsx ← Storybook stories
-    index.ts          ← barrel export
-```
-
-**Building a reusable component:**
-```tsx
-interface ButtonProps {
-  variant: 'primary' | 'secondary' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
-  loading?: boolean;
-  disabled?: boolean;
-  children: React.ReactNode;
-  onClick?: () => void;
-}
-
-function Button({ variant, size = 'md', loading, disabled, children, onClick }: ButtonProps) {
-  return (
-    <button
-      className={cn(styles.base, styles[variant], styles[size])}
-      disabled={disabled || loading}
-      onClick={onClick}
-    >
-      {loading ? <Spinner size="sm" /> : children}
-    </button>
-  );
-}
-```
-
-**What makes a good design system contribution:**
-- Components are **composable** (small, single responsibility)
-- **Typed props** with clear defaults
-- **Accessible** (keyboard navigation, ARIA attributes, focus management)
-- **Documented** with Storybook for visual testing
-- Consistent with the design tokens (colors, spacing, typography)
-
----
-
-# Part B: Git & Version Control
-
----
-
-## Q5: What Git workflow do you follow?
+## Q1: What Git workflow do you follow?
 
 **Answer:**
 
@@ -234,7 +50,7 @@ git push origin feature/vessel-alerts    # push to remote
 
 ---
 
-## Q6: How do you handle merge conflicts?
+## Q2: How do you handle merge conflicts?
 
 **Answer:**
 
@@ -268,7 +84,7 @@ git push origin feature/vessel-alerts    # push to remote
 
 ---
 
-## Q7: What is `git rebase -i` and when do you use it?
+## Q3: What is `git rebase -i` and when do you use it?
 
 **Answer:**
 
@@ -306,11 +122,11 @@ Result: 2 clean commits instead of 4 messy ones.
 
 ---
 
-# Part C: CI/CD, Docker & Cloud
+# Part B: CI/CD, Docker & Cloud
 
 ---
 
-## Q8: Explain a typical CI/CD pipeline.
+## Q4: Explain a typical CI/CD pipeline.
 
 **Answer:**
 
@@ -319,12 +135,11 @@ Push to feature branch
     │
     ▼
 ┌─────────── CI (Continuous Integration) ───────────┐
-│  1. Lint       → eslint, golangci-lint             │
-│  2. Type check → tsc --noEmit                      │
-│  3. Unit tests → go test, jest                     │
-│  4. Build      → go build, npm run build           │
-│  5. Integration tests → test against real DB       │
-│  6. Security scan → dependency audit, SAST         │
+│  1. Lint       → golangci-lint                     │
+│  2. Unit tests → go test                           │
+│  3. Build      → go build                          │
+│  4. Integration tests → test against real DB       │
+│  5. Security scan → dependency audit, SAST         │
 └───────────────────────────────────────────────────┘
     │
     ▼ (all green → merge PR)
@@ -367,7 +182,7 @@ jobs:
 
 ---
 
-## Q9: How do you containerize a Go service with Docker?
+## Q5: How do you containerize a Go service with Docker?
 
 **Answer:**
 
@@ -425,7 +240,7 @@ services:
 
 ---
 
-## Q10: What is Kubernetes at a high level? (JD mentions it)
+## Q6: What is Kubernetes at a high level?
 
 **Answer:**
 
@@ -474,11 +289,11 @@ spec:
 
 ---
 
-# Part D: Agile & Collaboration
+# Part C: Agile & Collaboration
 
 ---
 
-## Q11: Describe your experience with Agile/Scrum.
+## Q7: Describe your experience with Agile/Scrum.
 
 **Answer:**
 
@@ -500,7 +315,7 @@ spec:
 
 ---
 
-## Q12: How do you approach code reviews?
+## Q8: How do you approach code reviews?
 
 **Answer:**
 
@@ -522,11 +337,11 @@ spec:
 
 ---
 
-# Part E: Behavioral Questions
+# Part D: Behavioral Questions
 
 ---
 
-## Q13: "Tell me about a time you took ownership of a feature end-to-end."
+## Q9: "Tell me about a time you took ownership of a feature end-to-end."
 
 **Answer (STAR format):**
 
@@ -536,7 +351,7 @@ spec:
 
 **Action:**
 - Collaborated with the designer to clarify edge cases in the UX
-- Built the React frontend components and the Go API endpoint
+- Built the Go API endpoints and service layer
 - Wrote unit and integration tests
 - Set up database migration for the notification preferences table
 - Deployed to staging, tested manually, then promoted to production
@@ -548,7 +363,7 @@ spec:
 
 ---
 
-## Q14: "How do you handle receiving critical feedback on your code?"
+## Q10: "How do you handle receiving critical feedback on your code?"
 
 **Answer:**
 
@@ -564,7 +379,7 @@ I welcome it. Code reviews are one of the best ways to learn.
 
 ---
 
-## Q15: "How do you approach learning a new technology you haven't used before?"
+## Q11: "How do you approach learning a new technology you haven't used before?"
 
 **Answer:**
 
@@ -579,7 +394,7 @@ My approach:
 
 ---
 
-## Q16: "Describe how you ensure quality in your code."
+## Q12: "Describe how you ensure quality in your code."
 
 **Answer:**
 
@@ -587,12 +402,11 @@ Quality at multiple levels:
 
 1. **Before writing code:** Understand requirements. Ask clarifying questions. Consider edge cases.
 2. **While writing code:**
-   - Strong types (TypeScript strict mode, Go's type system)
+   - Strong types (Go's type system)
    - Small functions with single responsibility
    - Meaningful names — code should read like prose
 3. **Automated checks:**
-   - Linters: `eslint`, `golangci-lint`
-   - Type checking: `tsc --noEmit`
+   - Linters: `golangci-lint`
    - Tests: unit, integration, and API-level
 4. **Manual checks:**
    - Self-review my PR diff before requesting review
@@ -605,18 +419,18 @@ Quality at multiple levels:
 
 ---
 
-# Part F: System Design (Lightweight)
+# Part E: System Design (Lightweight)
 
 ---
 
-## Q17: "How would you design a real-time alert dashboard?"
+## Q13: "How would you design a real-time alert dashboard?"
 
 **Answer:**
 
 **Architecture:**
 ```
 ┌──────────┐     ┌──────────┐     ┌─────────────┐
-│  React   │◄───►│  Go API  │◄───►│ PostgreSQL  │
+│  Web     │◄───►│  Go API  │◄───►│ PostgreSQL  │
 │ Frontend │     │ Server   │     │ (alerts,    │
 └──────────┘     └──────────┘     │  vessels)   │
      ▲                ▲           └─────────────┘
@@ -631,26 +445,6 @@ Quality at multiple levels:
 - **WebSocket** for real-time updates (new alert → push to connected dashboards)
 - **PostgreSQL** for persistent storage
 - **Redis** (optional) for pub/sub if multiple API server instances
-- **React Query** for data fetching + WebSocket integration for live updates
-
-**Frontend approach:**
-```tsx
-function AlertDashboard() {
-  const { data: alerts } = useQuery({ queryKey: ['alerts'], queryFn: fetchAlerts });
-
-  // WebSocket for real-time updates
-  useEffect(() => {
-    const ws = new WebSocket('wss://api.example.com/ws/alerts');
-    ws.onmessage = (event) => {
-      const newAlert = JSON.parse(event.data);
-      queryClient.setQueryData(['alerts'], (old) => [newAlert, ...old]);
-    };
-    return () => ws.close();
-  }, []);
-
-  return <AlertTable alerts={alerts} />;
-}
-```
 
 **Key decisions to discuss:**
 - Polling vs WebSocket → WebSocket for low-latency alerts
@@ -660,18 +454,16 @@ function AlertDashboard() {
 
 ---
 
-## Quick Reference: Key Technologies from the JD
+## Quick Reference: Key Technologies
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│ Required                                            │
-│  ✓ TypeScript + React (frontend)                    │
-│  ✓ Go or Rust (backend) ← you're learning Go       │
+│ Core                                                │
+│  ✓ Go (backend)                                     │
 │  ✓ PostgreSQL / MySQL (relational DB)               │
 │  ✓ Git                                              │
 │                                                     │
 │ Preferred (mention familiarity, willingness to learn)│
-│  ○ Design systems / component libraries             │
 │  ○ CI/CD (GitHub Actions, Jenkins)                  │
 │  ○ Docker + Kubernetes                              │
 │  ○ Elastic Search + Kibana                          │
